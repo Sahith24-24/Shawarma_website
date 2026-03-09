@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (menuBtn && navLinks) {
     menuBtn.addEventListener('click', () => {
       navLinks.classList.toggle('active');
-      // Simple animation for hamburger
       menuBtn.classList.toggle('open');
     });
 
@@ -39,13 +38,39 @@ document.addEventListener('DOMContentLoaded', () => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('is-visible');
-        // Optional: Stop observing once animated
-        // observer.unobserve(entry.target);
       }
     });
   }, observerOptions);
 
   // Target elements to animate
-  const animatedElements = document.querySelectorAll('.fade-in-up, .slide-in-left, .slide-in-right');
+  const animatedElements = document.querySelectorAll('.fade-in-up, .slide-in-up');
   animatedElements.forEach(el => observer.observe(el));
+
+  // Form Submission
+  const leadForm = document.getElementById('leadForm');
+  if (leadForm) {
+    leadForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const btn = leadForm.querySelector('button[type="submit"]');
+      const originalText = btn.textContent;
+      
+      btn.textContent = 'Sending...';
+      btn.style.opacity = '0.7';
+      btn.disabled = true;
+
+      // Simulate API call
+      setTimeout(() => {
+        btn.textContent = 'Application Submitted!';
+        btn.style.backgroundColor = '#10b981'; // Success green
+        leadForm.reset();
+        
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.backgroundColor = '';
+          btn.style.opacity = '1';
+          btn.disabled = false;
+        }, 3000);
+      }, 1500);
+    });
+  }
 });
